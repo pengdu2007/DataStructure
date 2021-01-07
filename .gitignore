@@ -1,3 +1,4 @@
 # goland project files
 .idea
 *.exe
+cmake-build-debug
