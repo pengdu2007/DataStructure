@@ -4,11 +4,12 @@
 #define LIST_INIT_SIZE 100 // 线性表存储空间的初始分配量
 #define LISTINCREMENT 10 // 线性表存储空间的分配增量
 
-int InitList();
-int Insert();
-int Delete();
+int InitList(); // 初始化线性表
+int Insert(); // 插入元素
+int Delete(); // 删除元素
+int Locate(); // 查找元素
 
-// 线性表的动态分配顺序存储结构
+// 线性表顺序存储结构
 typedef struct {
     int *elem; // 存储空间基址
     int length; // 当前长度
@@ -24,12 +25,22 @@ int main() {
         Insert(&list, i + 1, i + 1);
     }
 
-    int d = Delete(&list, 2);
-    printf("Delete: %d\n", d);
-
-    for (int i = 0; i < 10; i++) {
-        printf("%d: %d \n", i, list.elem[i]);
+    printf("list: ");
+    for (int i = 0; i < list.length; i++) {
+        printf("%d ", list.elem[i]);
     }
+    printf("\n");
+    printf("Locate: %d: %d\n", 5, Locate(list, 5));
+    printf("list.length: %d\n", list.length);
+    int d = Delete(&list, 2);
+    printf("Delete: %d, list.length: %d\n", d, list.length);
+
+    printf("list: ");
+    for (int i = 0; i < list.length; i++) {
+        printf("%d ", list.elem[i]);
+    }
+    printf("\n");
+    printf("Locate: %d: %d\n", 5, Locate(list, 5));
     return 0;
 }
 
@@ -75,12 +86,27 @@ int Delete(SqList *L, int i) {
         return -1;
     }
     int *p, *q;
-    p = &(L->elem[i]); // p 指向被删除的元素的地址
+    p = &(L->elem[i - 1]); // p 指向被删除的元素的地址
     int e = *p;
     q = &(L->elem[L->length - 1]); // q指向最后一个元素的位置
     for (++p; p <= q; ++p) { // 从p的下一个位置开始遍历
         *(p - 1) = *p; // 每次往前移动一个元素
     }
-    --L->length;
+    L->length --;
     return e;
+}
+// 线性表查找
+int Locate(SqList L, int e) {
+    int i = 1;
+    printf("list.length: %d\n", L.length);
+    printf("i :");
+    while (i <= L.length && L.elem[i] != e) {
+        printf("%d ", i);
+        i++;
+    }
+    if (i <= L.length ) {
+        return i + 1;
+    }else {
+        return -1;
+    }
 }
